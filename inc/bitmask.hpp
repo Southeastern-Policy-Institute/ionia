@@ -10,23 +10,22 @@ template <class E>
 class bitmask_t {
   uint32_t mask_;
 
-  constexpr
+  static constexpr
   uint32_t BTR (uint32_t val, E n) {
     return val & ~(1U << static_cast<uint32_t> (n));
   };
 
-  constexpr
+  static constexpr
   uint32_t BTS (uint32_t val, E n) {
     return val | (1U << static_cast<uint32_t> (n));
   };
 
   constexpr
-  void build (void) {};
+  uint32_t build (E val) { return BTS (0, val); };
 
   template <typename... Targs> constexpr
-  void build (E val, Targs... args) {
-    mask_ = BTS (mask_, val);
-    build (args...);
+  uint32_t build (E val, Targs... args) {
+    return BTS (0, val) | build (args...);
   };
 
 public:
@@ -38,10 +37,8 @@ public:
 
   template <typename... Targs> constexpr
   bitmask_t (E head_1, Targs... args)
-    : bitmask_t ()
-  {
-    build (head_1, args...);
-  };
+    : mask_ (build (head_1, args...))
+  {};
 
   constexpr
   bool operator[] (E n) const {
