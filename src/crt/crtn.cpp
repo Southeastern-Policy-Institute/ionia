@@ -6,6 +6,7 @@
 
 typedef void (*dtor_ptr) (void);
 
+// These are defined by the linker script
 extern "C"
 dtor_ptr __dtors_start[0], __dtors_end[0];
 
