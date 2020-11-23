@@ -15,34 +15,21 @@ SECTIONS
 
   .kernel 0x8000 : AT (0x400) {
     PROVIDE (__kernel_start = .);
-    KEEP (*(SORT_NONE(.init)))
     *(.text .text.* .gnu.linkonce.t.*)
-    KEEP (*(SORT_NONE(.fini)))
 
+    . = (. + 3) & ~ 3;
     *(.rodata .rodata.* .gnu.linkonce.r.*)
 
     . = (. + 3) & ~ 3;
-    PROVIDE (__preinit_array_start = .);
-    *(.preinit_array)
-    PROVIDE (__preinit_array_end = .);
-    PROVIDE (__init_array_start = .);
-    *(.init_array)
-    PROVIDE (__init_array_end = .);
-    PROVIDE (__fini_array_start = .);
-    *(.fini_array)
-    PROVIDE (__fini_array_end = .);
-
     *(.data .data.* .gnu.linkonce.d.*)
     SORT (CONSTRUCTORS)
 
-    KEEP (*crtbegin.o(.ctors))
-    KEEP (*(EXCLUDE_FILE (*crtend.o ) .ctors))
-    KEEP (*(SORT(.ctors.*)))
+    PROVIDE (__ctors_start = .);
     KEEP (*(.ctors))
-    KEEP (*crtbegin.o(.dtors))
-    KEEP (*(EXCLUDE_FILE (*crtend.o ) .dtors))
-    KEEP (*(SORT(.dtors.*)))
+    PROVIDE (__ctors_end = .);
+    PROVIDE (__dtors_start = .);
     KEEP (*(.dtors))
+    PROVIDE (__dtors_end = .);
     
     . = (. + 3) & ~ 3;
     PROVIDE (__kernel_end = .);
@@ -50,7 +37,7 @@ SECTIONS
     LONG(0)
     LONG(0)
     
-    . = 0x167BFF - 0x400;
+    . = 0x1677FF;
     BYTE(0xFF)
   } = 0x90909090
 

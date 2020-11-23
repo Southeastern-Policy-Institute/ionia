@@ -7,7 +7,7 @@ DEBUG     := DEBUG
 
 # Project Definitions
 DEFS      := $(DEBUG) IONIA_VER=$(IONIA_VER) _IONIA=\"$(IONIA_NAME)\"
-UNDEFS    := UNICODE
+UNDEFS    := UNICODE _UNICODE
 
 # Commands
 PREFIX    := i686-linux-gnu-
@@ -38,25 +38,19 @@ OBJ       := $(OBJ:.c=.o)
 OBJ       := $(OBJ:.asm=.o)
 
 # Sub-projects
-REQS      := $(filter-out crt kernel boot,\
+REQS      := $(filter-out kernel boot,\
              $(subst $(SRCDIR)/,,$(wildcard $(SRCDIR)/*)))
 BOOT      := $(filter $(OBJDIR)/boot/%,$(OBJ))
+KERNEL    := $(filter $(OBJDIR)/kernel/%,$(OBJ))
 
 # Required Libraries
 LIBS      := $(REQS)
-
-# CRT Startup
-CRT_BEGIN := $(shell $(CC) $(CFLAGS) -print-file-name=crtbegin.o)
-CRT_END   := $(shell $(CC) $(CFLAGS) -print-file-name=crtend.o)
-CRT_I     := $(OBJDIR)/crt/crti.o
-CRT_N     := $(OBJDIR)/crt/crtn.o
 
 # All of the intermediate and output files (for cleanup later)
 CLEAN     := $(OBJ) $(OUTPUT) $(REQS:%=$(LIBDIR)/lib%.a)
 
 # To make sure things get linked in the correct order
-LINK_LIST := $(BOOT) $(CRT_I) $(CRT_BEGIN) $(filter $(OBJDIR)/kernel/%,$(OBJ)) \
-             $(CRT_END) $(CRT_N) $(REQS:%=$(LIBDIR)/lib%.a)
+LINK_LIST := $(BOOT) $(KERNEL) $(REQS:%=$(LIBDIR)/lib%.a)
 
 # Flags
 ASFLAGS   := -f elf

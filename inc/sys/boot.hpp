@@ -6,9 +6,6 @@
 #   define  __BOOT_HPP__
 #   include <stdint.h>
 
-extern "C" void* __kernel_end;
-extern "C" uint32_t __map_ent;
-
 typedef struct SMAP_ENTRY {
 
   uint32_t BaseL;   // base address uint64_t
@@ -19,5 +16,14 @@ typedef struct SMAP_ENTRY {
   uint32_t ACPI;    // extended
 
 } __attribute__((packed)) smap_entry_t;
+
+extern
+smap_entry_t* smap;
+
+extern "C"
+void* __kernel_end;
+
+extern "C"
+uint32_t __map_ent;
 
 # endif /* __BOOT_HPP__ */

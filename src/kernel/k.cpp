@@ -5,8 +5,7 @@
 # include <string.hpp>
 # include <bitmask.hpp>
 
-smap_entry_t* smap = reinterpret_cast<smap_entry_t*>
-  (reinterpret_cast<uintptr_t> (&__map_ent) + 4);
+ionia::string test_string {"TEST_STRING"};
 
 extern "C"
 void k_main (void) {
@@ -36,6 +35,8 @@ void k_main (void) {
   temp  << "MEMORY AVAILABLE: " << ionia::string::Flag (8)
         << (uint32_t)sys::MEM_BLOCK::MEM_MAX - (uint32_t)sys::MEM_BLOCK::MEM_START;
   root << temp;
+  root.gotoxy (0, 1);
+  root << "TEST STRING: " << test_string;
   root.blit ();
   
   // Quit

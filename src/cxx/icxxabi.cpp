@@ -9,6 +9,7 @@ namespace __cxxabiv1 {
 
     atexit_func_entry_t* __atexit_funcs = nullptr;
     uarch_t __atexit_func_count = 0;
+    void* __dso_handle __attribute__ ((__weak__)) = nullptr;
 
     /* for virtual functions */
     void __cxa_pure_virtual () {};
