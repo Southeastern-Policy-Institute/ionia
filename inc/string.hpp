@@ -7,11 +7,35 @@
 #   include "string.h"
 #   include "array.hpp"
 #   include "algorithm.hpp"
+#   include "bitmask.hpp"
+
 namespace ionia {
 
   // Variable width NULL terminated string datatype.
   class string : public array<tchar_t> {
   public:
+
+    enum FLAG {
+      HEX, ZERO_EXTEND, CAPS
+    };
+
+    class Flag : public bitmask_t<FLAG> {
+      __SIZE_TYPE__ number_width_;
+    public:
+
+      constexpr
+      Flag (bitmask_t<FLAG> f = bitmask_t<FLAG> (HEX, ZERO_EXTEND, CAPS),
+            __SIZE_TYPE__ w = 1)
+        : bitmask_t (f), number_width_ (w)
+      {};
+
+      constexpr
+      __SIZE_TYPE__ number_width (void) const {
+        return number_width_;
+      };
+    };
+
+    static Flag flags;
 
     // Returns the number of characters in a string.
     template<typename T = tchar_t> static inline
@@ -114,25 +138,13 @@ namespace ionia {
       return array_;
     };
 
-    inline
-    string& operator<< (const string& str) {
-      tchar_t* temp = new tchar_t[length () + str.length () + 1];
-      strcpy (temp, array_);
-      strcpy (temp + length (), str.array_);
-      delete array_;
-      array_ = temp;
-      size_ = strlen (array_) + 1;
-      return *this;
-    };
+    string& operator<< (const string&);
 
-    inline
-    string& operator<< (tchar_t c) {
-      string temp {length () + 1};
-      strcpy (temp.array_, array_);
-      temp[length ()] = c;
-      operator= (temp);
-      return *this;
-    };
+    string& operator<< (tchar_t);
+
+    string& operator<< (uint32_t);
+
+    string& operator<< (const Flag&);
 
   };
 

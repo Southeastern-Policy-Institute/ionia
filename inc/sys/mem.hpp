@@ -2,13 +2,10 @@
  * Claudia, 2020
  */
 
-# ifndef _MEM_H_
+# if !defined(_MEM_H_) && defined(__cplusplus)
 #   define  _MEM_H_
 #   include <stdint.h>
 #   include "boot.h"
-#   ifndef  __cplusplus
-#     error "MEM.HPP REQUIRES C++"
-#   endif /* __cplusplus */
 namespace sys {
   
   struct MEM_BLOCK {

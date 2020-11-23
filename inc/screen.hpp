@@ -21,6 +21,13 @@ namespace screen {
     return Cursor (cursor + len);
   };
 
+  inline
+  void cls (void) {
+    volatile uint16_t* root = reinterpret_cast<volatile uint16_t*> (0xB8000);
+    for (uint32_t i = 0; i < 80*25; i++)
+      root[i] = screen::schar_t (' ');
+  };
+
 };
 
 # endif /* _SCREEN_HPP_ */
