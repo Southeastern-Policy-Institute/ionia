@@ -4,7 +4,13 @@
 
 # if !defined(_SPI_STRING_HPP_) && defined(__cplusplus)
 #   define  _SPI_STRING_HPP_
-#   include "string.h"
+#   ifdef   UNICODE
+#     define  PREFIX_L(x) L ## x
+typedef wchar_t tchar_t;
+#   else
+#     define  PREFIX_L(x) x
+typedef char tchar_t;
+#   endif /* UNICODE */
 #   include "array.hpp"
 #   include "algorithm.hpp"
 #   include "bitmask.hpp"
@@ -24,8 +30,8 @@ namespace ionia {
     public:
 
       constexpr
-      Flag (bitmask_t<FLAG> f = bitmask_t<FLAG> (HEX, ZERO_EXTEND, CAPS),
-            __SIZE_TYPE__ w = 1)
+      Flag (__SIZE_TYPE__ w = 1,
+            bitmask_t<FLAG> f = bitmask_t<FLAG> (HEX, ZERO_EXTEND, CAPS))
         : bitmask_t (f), number_width_ (w)
       {};
 

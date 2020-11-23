@@ -11,23 +11,6 @@
 
 namespace ionia {
 
-  inline
-  const Cursor puts (const string& str, const Cursor& cursor) {
-    volatile uint16_t* root = reinterpret_cast<volatile uint16_t*> (0xB8000);
-    root += cursor;
-    __SIZE_TYPE__ len;
-    for (len = 0; str[len]; len++)
-      root[len] = schar_t (str[len]);
-    return Cursor (cursor + len);
-  };
-
-  inline
-  void cls (void) {
-    volatile uint16_t* root = reinterpret_cast<volatile uint16_t*> (0xB8000);
-    for (uint32_t i = 0; i < 80*25; i++)
-      root[i] = schar_t (' ');
-  };
-
   class Screen {
     array<schar_t> buffer_;
     Cursor cursor_;

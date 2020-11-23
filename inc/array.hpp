@@ -13,12 +13,14 @@ namespace ionia {
   protected:
     T* array_;
     __SIZE_TYPE__ size_;
+
   private:
+    inline
     void build (T val) {
       array_[size_-1] = val;
     };
 
-    template <typename... Targs>
+    template <typename... Targs> inline
     void build (T val, Targs... args) {
       array_[size_-sizeof...(args)-1] = T (val);
       build (args...);
@@ -30,33 +32,40 @@ namespace ionia {
       T* start_;
     public:
 
+      inline
       iterator (T* start)
         : start_ (start)
       {};
 
+      inline
       iterator operator++ (void) {
         start_++;
         return *this;
       };
 
+      inline
       bool operator!= (const iterator& other) const {
         return start_ != other.start_;
       };
 
-      const T operator* (void) const {
+      inline
+      const T& operator* (void) const {
         return *start_;
       };
 
     };
 
+    inline
     iterator begin (void) const {
       return iterator (array_);
     };
 
+    inline
     iterator end (void) const {
       return iterator (array_ + size_);
     };
 
+    inline
     array (unsigned int size)
       : array_ (nullptr),
         size_ (size)
@@ -69,6 +78,7 @@ namespace ionia {
       : array (0)
     {};
 
+    inline
     array (const T* input_array, unsigned int size)
       : array (size)
     {
@@ -76,13 +86,14 @@ namespace ionia {
         array_[i] = *input_array++;
     };
 
-    template <typename... Targs>
+    template <typename... Targs> inline
     array (T head_1, Targs... args)
       : array (sizeof...(args) + 1)
     {
       build (head_1, args...);
     };
 
+    inline
     array (const array& arr)
       : array (arr.size_)
     {
@@ -90,6 +101,7 @@ namespace ionia {
         array_[i] = arr.array_[i];
     };
 
+    inline
     ~array (void) {
       delete[] array_;
     };
@@ -122,12 +134,14 @@ namespace ionia {
       return array_;
     };
 
+    inline
     T operator[] (unsigned int index) const {
       if (!array_ || index >= size_)
         return T ();
       return T (array_[index]);
     };
 
+    inline
     T& operator[] (unsigned int index) {
       static T NULL_T;
       if (!array_ || index >= size_)

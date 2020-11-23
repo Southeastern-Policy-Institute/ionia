@@ -1,9 +1,9 @@
-/* ICXXABI.H - GCC ABI Implementation
- * Claudia, 2020
+/* ICXXABI.HPP - GCC ABI Implementation
+ * Southeastern Policy Institute, 2020
  */
 
-# ifndef _ICXXABI_H_
-#   define _ICXXABI_H_
+# if !defined(_ICXXABI_HPP_) && defined(__cplusplus)
+#   define _ICXXABI_HPP_
 #   define ATEXIT_MAX_FUNCS 128u
 #   ifdef __cplusplus
 namespace __cxxabiv1 {
@@ -29,4 +29,4 @@ namespace __cxxabiv1 {
   };
 };
 #   endif /* __cplusplus */
-# endif /* _ICXXABI_H_ */
+# endif /* _ICXXABI_HPP_ */

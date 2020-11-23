@@ -2,12 +2,12 @@
  * Southeastern Policy Institute, 2020
  */
 
-#include <sys/icxxabi.h>
+#include <sys/icxxabi.hpp>
 
 namespace __cxxabiv1 {
   extern "C" {
 
-    atexit_func_entry_t __atexit_funcs[ATEXIT_MAX_FUNCS];
+    atexit_func_entry_t* __atexit_funcs = nullptr;
     uarch_t __atexit_func_count = 0;
 
     /* for virtual functions */
@@ -19,9 +19,12 @@ namespace __cxxabiv1 {
 
     void __cxa_guard_abort (__guard*) {};
 
-    int __cxa_atexit(destructor_func_t f, void* objptr, void* dso) {
+    int __cxa_atexit (destructor_func_t f, void* objptr, void* dso) {
       if (__atexit_func_count >= ATEXIT_MAX_FUNCS)
         return -1;
+
+      if (!__atexit_funcs)
+        __atexit_funcs = new atexit_func_entry_t[ATEXIT_MAX_FUNCS];
 
       __atexit_funcs[__atexit_func_count].destructor_func = f;
       __atexit_funcs[__atexit_func_count].obj_ptr = objptr;
@@ -31,7 +34,7 @@ namespace __cxxabiv1 {
       return 0;
     };
 
-    void __cxa_finalize(void* f) {
+    void __cxa_finalize (void* f) {
       uarch_t i = __atexit_func_count;
 
       if (!f) {
@@ -49,6 +52,8 @@ namespace __cxxabiv1 {
           };
 
       };
+
+      delete __atexit_funcs;
     };
 
   };

@@ -1,6 +1,6 @@
 
 # include <screen.hpp>
-# include <sys/boot.h>
+# include <sys/boot.hpp>
 # include <sys/mem.hpp>
 # include <string.hpp>
 # include <bitmask.hpp>
@@ -10,11 +10,6 @@ smap_entry_t* smap = reinterpret_cast<smap_entry_t*>
 
 extern "C"
 void k_main (void) {
-
-  constexpr
-  bitmask_t<ionia::string::FLAG> DEFAULT_FLAGS = {
-    ionia::string::HEX, ionia::string::ZERO_EXTEND, ionia::string::CAPS
-  };
 
   // Set up memory so the allocator doesn't get confused
   for (uint32_t i = 0; i < __map_ent; i++)
@@ -38,7 +33,7 @@ void k_main (void) {
   // Clear screen
   root.clear ();
   ionia::string temp;
-  temp  << "MEMORY AVAILABLE: " << ionia::string::Flag (DEFAULT_FLAGS, 8)
+  temp  << "MEMORY AVAILABLE: " << ionia::string::Flag (8)
         << (uint32_t)sys::MEM_BLOCK::MEM_MAX - (uint32_t)sys::MEM_BLOCK::MEM_START;
   root << temp;
   root.blit ();

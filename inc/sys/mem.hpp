@@ -1,11 +1,12 @@
 /* MEM.H - Kernel Memory Management
- * Claudia, 2020
+ * Southeastern Policy Institute, 2020
  */
 
 # if !defined(_MEM_H_) && defined(__cplusplus)
 #   define  _MEM_H_
 #   include <stdint.h>
-#   include "boot.h"
+#   include "boot.hpp"
+
 namespace sys {
   
   struct MEM_BLOCK {
@@ -14,14 +15,19 @@ namespace sys {
     MEM_BLOCK* next;
     bool used;
 
-    inline __SIZE_TYPE__ size (void) const {
-      return next
-        ? ((uintptr_t)next) - (((uintptr_t)this) + sizeof (MEM_BLOCK))
+    inline
+    __SIZE_TYPE__ size (void) const {
+      uintptr_t _next = reinterpret_cast<uintptr_t> (next);
+      uintptr_t _this = reinterpret_cast<uintptr_t> (this);
+      return _next
+        ? _next - (_this + sizeof (MEM_BLOCK))
         : 0;
     };
 
-    inline uintptr_t start (void) const {
-      return ((uintptr_t)this) + sizeof (MEM_BLOCK);
+    inline
+    uintptr_t start (void) const {
+      uintptr_t _this = reinterpret_cast<uintptr_t> (this);
+      return _this + sizeof (MEM_BLOCK);
     };
   } __attribute__ ((packed));
 

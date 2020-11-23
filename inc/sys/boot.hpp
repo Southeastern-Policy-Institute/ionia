@@ -1,14 +1,13 @@
-/* BOOT.H - Declarations for BootLoader
- * Claudia, 2020
+/* BOOT.HPP - Declarations for BootLoader
+ * Southeastern Policy Institute, 2020
  */
 
-# ifndef  __BOOT_H__
-#   define  __BOOT_H__
+# if !defined(__BOOT_HPP__) && defined(__cplusplus)
+#   define  __BOOT_HPP__
 #   include <stdint.h>
-#   include "../common.h"
 
-EXTERN void* __kernel_end;
-EXTERN uint32_t __map_ent;
+extern "C" void* __kernel_end;
+extern "C" uint32_t __map_ent;
 
 typedef struct SMAP_ENTRY {
 
@@ -21,4 +20,4 @@ typedef struct SMAP_ENTRY {
 
 } __attribute__((packed)) smap_entry_t;
 
-# endif /* __BOOT_H__ */
+# endif /* __BOOT_HPP__ */
