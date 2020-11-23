@@ -18,27 +18,12 @@ extern "C" void k_main (void) {
     root[i] = screen::schar_t (' ');
   };
 
-  typedef enum class FLAGS {
-    FLAG_0, FLAG_1, FLAG_2
-  } flag_t;
-
-  bitmask_t<flag_t> flags { FLAGS::FLAG_0, FLAGS::FLAG_2 };
-
-  if (flags[FLAGS::FLAG_0])
-    screen::puts ("FLAG_0 SET!", screen::Cursor (0, 10));
-  else
-    screen::puts ("FLAG_0 NOT SET!", screen::Cursor (0, 10));
-
-  if (flags[FLAGS::FLAG_1])
-    screen::puts ("FLAG_1 SET!", screen::Cursor (0, 11));
-  else
-    screen::puts ("FLAG_1 NOT SET!", screen::Cursor (0, 11));
-
-  if (flags[FLAGS::FLAG_2])
-    screen::puts ("FLAG_2 SET!", screen::Cursor (0, 12));
-  else
-    screen::puts ("FLAG_2 NOT SET!", screen::Cursor (0, 12));
-
+  ionia::memset<uint8_t> ((uint8_t*)__kernel_end, (uint8_t)0, 25);
+  
+  ionia::string test_string_0 { 'T', 'E', 'S', 'T', '_', '0', ' ' };
+  ionia::string test_string_1 { "TEST_1 " };
+  test_string_0 << test_string_1 << "TEST_2";
+  screen::puts (test_string_0, screen::Cursor (0,0));
 
   asm volatile ("cli\nhlt");
 };

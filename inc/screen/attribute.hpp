@@ -16,8 +16,8 @@ namespace screen {
     LIGHT_RED,  LIGHT_MAGENTA,  YELLOW,       WHITE
   };
 
-  constexpr COLOR DEFAULT_FOREGROUND = COLOR::WHITE;
-  constexpr COLOR DEFAULT_BACKGROUND = COLOR::LIGHT_BLUE;
+  constexpr COLOR DEFAULT_FOREGROUND = COLOR::YELLOW;
+  constexpr COLOR DEFAULT_BACKGROUND = COLOR::BLUE;
 
   /* Screen Character Attribute Type */
   class attr_t {

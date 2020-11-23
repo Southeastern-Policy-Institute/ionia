@@ -7,6 +7,7 @@ DEBUG     := DEBUG
 
 # Project Definitions
 DEFS      := $(DEBUG) IONIA_VER=$(IONIA_VER) _IONIA=\"$(IONIA_NAME)\"
+UNDEFS    := UNICODE
 
 # Commands
 PREFIX    := i686-linux-gnu-
@@ -61,10 +62,10 @@ LINK_LIST := $(BOOT) $(CRT_I) $(CRT_BEGIN) $(filter $(OBJDIR)/kernel/%,$(OBJ)) \
 ASFLAGS   := -f elf
 CFLAGS    := -c -Os -ffreestanding -Wall -x c -std=gnu11 -fno-pie \
              -fno-asynchronous-unwind-tables -fno-exceptions \
-             $(INCDIR:%=-I%) $(DEFS:%=-D%)
+             $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 CPPFLAGS  := -c -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
              -fno-asynchronous-unwind-tables -fcheck-new -fno-exceptions \
-             $(INCDIR:%=-I%) $(DEFS:%=-D%)
+             $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 LDFLAGS   := -nostdlib -Bsymbolic \
              $(LIBDIR:%=-L%) -T$(RESDIR)/link.ld $(LIBS:%=-l%)
 
