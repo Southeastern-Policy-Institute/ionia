@@ -10,6 +10,7 @@ namespace sys {
   
   struct MEM_BLOCK {
     static MEM_BLOCK* MEM_START;
+    static MEM_BLOCK* MEM_MAX;
     MEM_BLOCK* next;
     bool used;
 

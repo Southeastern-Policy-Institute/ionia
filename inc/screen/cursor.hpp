@@ -6,7 +6,7 @@
 #   define  _CURSOR_HPP_
 #   include <stdint.h>
 
-namespace screen {
+namespace ionia {
 
   /* Screen Cursor */
   struct Cursor {
@@ -35,6 +35,19 @@ namespace screen {
     constexpr
     uint8_t y (void) const {
       return position_ / 80;
+    };
+
+    inline
+    Cursor& operator++ (void) {
+      position_ += 1;
+      return *this;
+    };
+
+    inline
+    Cursor operator++ (int) {
+      Cursor temp = *this;
+      position_ += 1;
+      return temp;
     };
 
   };

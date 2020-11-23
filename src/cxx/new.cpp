@@ -9,6 +9,8 @@ using sys::MEM_BLOCK;
 
 MEM_BLOCK* MEM_BLOCK::MEM_START = (MEM_BLOCK*)&__kernel_end;
 
+MEM_BLOCK* MEM_BLOCK::MEM_MAX = MEM_BLOCK::MEM_START + 50;
+
 void* operator new (__SIZE_TYPE__ len) {
   MEM_BLOCK* target;
   MEM_BLOCK* temp;

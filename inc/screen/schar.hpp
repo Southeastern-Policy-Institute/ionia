@@ -7,7 +7,7 @@
 #   include <stdint.h>
 #   include "attribute.hpp"
 
-namespace screen {
+namespace ionia {
 
   /* Screen Character */
   class schar_t {

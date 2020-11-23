@@ -1,6 +1,7 @@
 
 # include <screen.hpp>
 # include <sys/boot.h>
+# include <sys/mem.hpp>
 # include <string.hpp>
 # include <bitmask.hpp>
 
@@ -16,19 +17,31 @@ void k_main (void) {
   };
 
   // Set up memory so the allocator doesn't get confused
-  ionia::memset<uint8_t> ((uint8_t*)__kernel_end, (uint8_t)0, 25);
+  for (uint32_t i = 0; i < __map_ent; i++)
+    if (smap[i].BaseL == 0x100000) {
+      sys::MEM_BLOCK::MEM_START =
+        reinterpret_cast<sys::MEM_BLOCK*> (smap[i].BaseL);
+
+      sys::MEM_BLOCK::MEM_MAX =
+        reinterpret_cast<sys::MEM_BLOCK*> (smap[i].BaseL + smap[i].LengthL);
+        
+      ionia::memset<uint8_t> (
+        reinterpret_cast<uint8_t*> (sys::MEM_BLOCK::MEM_START),
+        (uint8_t)0,
+        250
+      );
+    };
+
+  // Create screen buffer
+  ionia::Screen root;
 
   // Clear screen
-  screen::cls ();
-
-  for (uint32_t i = 0; i < __map_ent; i++) {
-    ionia::string temp;
-    temp
-      << ionia::string::Flag (DEFAULT_FLAGS, 1) << '[' << i << "] "
-      << ionia::string::Flag (DEFAULT_FLAGS, 8) << smap[i].BaseL << " : " << smap[i].LengthL
-      << ionia::string::Flag (DEFAULT_FLAGS, 4) << " : " << smap[i].Type;
-    screen::puts (temp, screen::Cursor (0, i));
-  };
+  root.clear ();
+  ionia::string temp;
+  temp  << "MEMORY AVAILABLE: " << ionia::string::Flag (DEFAULT_FLAGS, 8)
+        << (uint32_t)sys::MEM_BLOCK::MEM_MAX - (uint32_t)sys::MEM_BLOCK::MEM_START;
+  root << temp;
+  root.blit ();
   
   // Quit
   asm volatile ("cli\nhlt");

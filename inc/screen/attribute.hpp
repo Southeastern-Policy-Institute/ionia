@@ -6,7 +6,7 @@
 #   define  _ATTR_T_HPP_
 #   include <stdint.h>
 
-namespace screen {
+namespace ionia {
 
   //  Color codes for screen characters.
   enum class COLOR : uint8_t {
