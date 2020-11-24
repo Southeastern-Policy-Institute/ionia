@@ -77,7 +77,7 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
         in      al, 0x92                ; Fast A20 Gate Open
         or      al, 2
         out     0x92, al
-.okay:  call    do_e820
+.okay:  call    do_e820                 ; Populate memory map
         cli                             ; Disable interrupts
         lgdt    [gdtr]                  ; Load the GDT
         mov     eax, cr0                ; Get CPU flags
