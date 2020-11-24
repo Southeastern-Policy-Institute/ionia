@@ -2,6 +2,7 @@
 # include <screen.hpp>
 # include <sys/boot.hpp>
 # include <sys/mem.hpp>
+# include <sys/idt.hpp>
 # include <string.hpp>
 # include <bitmask.hpp>
 
@@ -25,6 +26,12 @@ void k_main (void) {
         250
       );
     };
+
+  // Install IDT
+  install_idt ();
+
+  // Enable interrupts
+  asm volatile ("sti");
 
   // Create screen buffer
   ionia::Screen root;

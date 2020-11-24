@@ -1,4 +1,6 @@
-
+/* STRING.CPP - Implements some string manipulation routines.
+ * Southeastern Policy Institute, 2020
+ */
 
 # include <string.hpp>
 
