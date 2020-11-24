@@ -7,6 +7,7 @@
 extern  __sector_count
 extern  __sector_start
 extern  __map_ent
+extern  __smap
 extern  k_main
 extern  _init
 extern  _fini
@@ -60,9 +61,9 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
         mov     al, 0x03                ; Set default video mode (text|80x25)
         int     0x10                    ; Call video interrupt.
 .read:  mov     ah, 0x02                ; BIOS Read function (2)
-        mov     al, __sector_count      ; Number of sectors to read
+        mov     al, byte [__sector_count]       ; Number of sectors to read
         mov     ch, 0x00                ; Cylinder (0)
-        mov     cl, __sector_start      ; Starting sector
+        mov     cl, byte [__sector_start]       ; Starting sector
         mov     dh, 0x00                ; Head
         mov     dl, byte [__drive]
         mov     bx, 0x0800              ; Set buffer location to 0x0800:0x0000
@@ -73,10 +74,9 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
         inc     al
         mov     byte [__tries], al
         jc      .error
-        call    check                   ; Check A20 Gate
-        cmp     ax, 1
-        je      .okay                   ; Skip if the gate is already open
-        call    inita20                 ; Otherwise, open the gate
+        in      al, 0x92                ; Fast A20 Gate Open
+        or      al, 2
+        out     0x92, al
 .okay:  call    do_e820
         cli                             ; Disable interrupts
         lgdt    [gdtr]                  ; Load the GDT
@@ -93,73 +93,9 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
         jmp     .read                   ; Retry
 .quit:  cli                             ; Give up
         hlt
-check:  pushf                           ; Check A20 Gate
-        push    ds
-        push    es
-        push    di
-        push    si
-        cli
-        xor     ax, ax
-        mov     es, ax
-        not     ax
-        mov     ds, ax
-        mov     di, 0x0500
-        mov     si, 0x0510
-        mov     al, byte [es:di]
-        push    ax
-        mov     al, byte [ds:si]
-        push    ax
-        mov     byte [es:di], 0x00
-        mov     byte [ds:si], 0xFF
-        cmp     byte [es:di], 0xFF
-        pop     ax
-        mov     byte [ds:si], al
-        pop     ax
-        mov     byte [es:di], al
-        mov     ax, 0
-        je      .done
-        mov     ax, 1
-.done:  sti
-        pop     si
-        pop     di
-        pop     es
-        pop     ds
-        popf
-        ret
-inita20:cli                             ; Open A20 Gate
-        call    .wait1
-        mov     al, 0xAD
-        out     0x64, al
-        call    .wait1
-        mov     al, 0xD0
-        out     0x64, al
-        call    .wait2
-        in      al, 0x60
-        push    ax
-        call    .wait1
-        mov     al, 0xD1
-        out     0x64, al
-        call    .wait1
-        pop     ax
-        or      al, 2
-        out     0x60, al
-        call    .wait1
-        mov     al, 0xAE
-        out     0x64, al
-        call    .wait1
-        sti
-        ret
-.wait1: in      al, 0x64                ; Hardware Wait (even)
-        test    al, 2
-        jnz     .wait1
-        ret
-.wait2: in      al, 0x64                ; Hardware Wait (odd)
-        test    al, 1
-        jz      .wait2
-        ret
 do_e820:xor     ax, ax
         mov     es, ax                  ; Set ES to 0x0000
-        mov     di, __map_ent+4         ; Set di to 4 + start
+        mov     di, word [__smap]       ; Set di to 4 + start
         xor     ebx, ebx                ; ebx must be 0 to start
         xor     bp, bp                  ; keep an entry count in bp
         mov     edx, 0x0534D4150        ; Place "SMAP" into edx
@@ -192,7 +128,7 @@ do_e820:xor     ax, ax
         add     di, 24
 .skip:  test    ebx, ebx                ; if ebx resets to 0, list is complete
         jne     short .e820lp
-.e820f: mov     [__map_ent], bp         ; store the entry count
+.e820f: mov     word [__map_ent], bp    ; store the entry count
         clc                             ; there is "jc" on end of list to this point, so the carry must be cleared
         ret
 .failed:stc                             ; "function unsupported" error exit

@@ -62,6 +62,10 @@ CPPFLAGS  := -c -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
              $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 LDFLAGS   := -nostdlib -Bsymbolic \
              $(LIBDIR:%=-L%) -T$(RESDIR)/link.ld $(LIBS:%=-l%)
+$(OBJDIR)/boot/%.o : CPPFLAGS := -c -march=i386 -m16 -mmanual-endbr -fno-pic \
+             -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
+             -fno-asynchronous-unwind-tables -fcheck-new -fno-exceptions \
+             $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 
 # Rules
 .PHONY : all clean test

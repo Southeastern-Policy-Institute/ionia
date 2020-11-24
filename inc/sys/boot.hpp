@@ -17,13 +17,32 @@ typedef struct SMAP_ENTRY {
 
 } __attribute__((packed)) smap_entry_t;
 
-extern
-smap_entry_t* smap;
+struct GDT_ENTRY {
+  uint16_t limit, baseL;
+  uint8_t baseM, access, flag_limit, baseH;
+} __attribute__ ((packed));
 
-extern "C"
-void* __kernel_end;
+struct GDTR {
+  uint16_t size;
+  uint32_t base;
+} __attribute__ ((packed));
 
-extern "C"
-uint32_t __map_ent;
+extern "C" {
+
+  extern void* __kernel_start[0];
+
+  extern void* __kernel_end[0];
+
+  extern uint16_t __map_ent;
+
+  extern uint32_t __sector_count;
+
+  extern uint32_t __sector_start;
+
+  extern uint32_t __smap_size;
+
+  extern smap_entry_t* __smap;
+
+};
 
 # endif /* __BOOT_HPP__ */
