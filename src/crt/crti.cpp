@@ -4,12 +4,6 @@
 
 # include <sys/boot.hpp>
 
-extern "C"
-void k_main (void);
-
-extern "C"
-void _fini (void);
-
 typedef void (*ctor_ptr) (void);
 
 // These are defined by the linker script

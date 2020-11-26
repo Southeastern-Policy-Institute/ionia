@@ -50,6 +50,7 @@ void exception (regs_t* r) {
     temp << "EXCEPTION [" << r->int_no << "] " << exception_strings[r->int_no];
     exception_message_screen.gotoxy (2, 1);
     exception_message_screen << temp;
+    exception_message_screen.blit ();
     asm volatile ("cli\nhlt");
   };
 };
