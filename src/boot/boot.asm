@@ -17,8 +17,16 @@ global  __drive
 
 ; Initialized Data
 section .data
+
+; This error message is displayed whenever the disk read routine fails.
+err_msg db      "ERROR READING DISK.  Press any key to retry...", 0x0D, 0x0A, 0
+
+; This error message is displayed if the memory map fails population.
+erm_msg db      "ERROR POPULATING MEMORY MAP.  Fatal...", 0x0D, 0x0A, 0
+
 ; Very basic GDT setup.  All memory is available for access, and none of it
 ; is protected.  The data segment is prevented from execution, but not writing.
+align 8
 gdt:
 .null   dq      0
 .code   dw      0xFFFF
@@ -41,6 +49,7 @@ gdt:
         db      0
 .end:
 
+align 8
 gdtr:
 .size   dw      gdt.end - gdt
 .base   dd      gdt
@@ -48,7 +57,6 @@ gdtr:
 ; Uninitialized Data
 section .bss
 __drive resb    1
-__tries resb    1
 
 section .text
 boot:   mov     byte [__drive], dl      ; Store Drive Number
@@ -57,7 +65,6 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
         mov     sp, 0x03FE              ; Set top of stack
         xor     ax, ax
         mov     ds, ax                  ; Set data segment to 0x0000
-        mov     byte [__tries], al      ; Initialize attempt count
         mov     al, 0x03                ; Set default video mode (text|80x25)
         int     0x10                    ; Call video interrupt.
 .read:  mov     ah, 0x02                ; BIOS Read function (2)
@@ -70,15 +77,17 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
         mov     es, bx
         xor     bx, bx
         int     0x13                    ; Load to es:bx
-        mov     al, byte [__tries]      ; Increment attempt count
-        inc     al
-        mov     byte [__tries], al
         jc      .error
         in      al, 0x92                ; Fast A20 Gate Open
         or      al, 2
         out     0x92, al
-.okay:  call    do_e820                 ; Populate memory map
-        cli                             ; Disable interrupts
+        call    do_e820                 ; Populate memory map
+        jnc     .okay                   ; Proceed if no errors
+        mov     si, erm_msg             ; Print on error
+        call    print
+        cli
+        hlt
+.okay:  cli                             ; Disable interrupts
         lgdt    [gdtr]                  ; Load the GDT
         mov     eax, cr0                ; Get CPU flags
         or      eax, 1                  ; Set CPU to protected mode
@@ -87,12 +96,21 @@ boot:   mov     byte [__drive], dl      ; Store Drive Number
 .error: xor     ax, ax
         xor     dx, dx
         int     0x13                    ; Reset disk drive
-        mov     al, byte [__tries]      ; Quit after 3 attempts
-        cmp     al, 3
-        je      .quit
+        mov     si, err_msg             ; Print error message
+        call    print
+        xor     ax, ax                  ; Wait for any key
+        int     0x16
         jmp     .read                   ; Retry
-.quit:  cli                             ; Give up
-        hlt
+print:  push    si                      ; Store SI
+        cld                             ; Set direction flag to increment
+.putc:  lodsb                           ; Load AL with [DS:SI]
+        cmp     al, 0                   ; Exit on NULL
+        je      .done
+        mov     ah, 0x0E                ; Otherwise, print the character in AL
+        int     0x10
+        jmp     .putc
+.done:  pop     si                      ; Restore SI
+        ret
 do_e820:xor     ax, ax
         mov     es, ax                  ; Set ES to 0x0000
         mov     di, word [__smap]       ; Set di to 4 + start

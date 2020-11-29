@@ -13,7 +13,7 @@ void operator delete (void* loc) {
     return;
 
   //  Itterate over the blocks
-  for ( previous = nullptr, target = MEM_BLOCK::MEM_START;
+  for ( previous = nullptr, target = sys::__mem_start;
         target->next;
         previous = target, target = target->next
   ) {

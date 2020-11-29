@@ -3,6 +3,8 @@ SECTIONS
 {
   .boot 0x7C00 : AT (0) {
     *boot.o(.text)
+
+    . = (. + 3) & ~ 3;
     *boot.o(.data)
 
     . = (. + 3) & ~ 3;
@@ -11,9 +13,13 @@ SECTIONS
     __sector_start = .;
     LONG(3)
     __smap_size = .;
-    LONG((__kernel_start - __smap) / 24)
+    LONG((__kernel_start - (__map_ent + 4)) / 24)
     __smap = .;
     LONG(__map_ent + 4)
+    __mem_start = .;
+    LONG(0x100000);
+    __mem_max = .;
+    LONG(0)
 
     /* Boot Sector Signature */
     . = 0x1FE;
@@ -22,7 +28,7 @@ SECTIONS
 
   /* Sector 2 reserved for uninitialized data */
   .bss 0x7E00 : AT (0x200) {
-    *(.bss)
+    *boot.o(.bss)
     __map_ent = .;
   }
 
@@ -43,13 +49,15 @@ SECTIONS
     PROVIDE (__dtors_start = .);
     KEEP (*(.dtors))
     PROVIDE (__dtors_end = .);
-    
+
     . = (. + 3) & ~ 3;
     __kernel_end = .;
     /* This makes sure the allocator doesn't get confused */
     LONG(0)
     LONG(0)
-    
+
+    *(.bss)
+
     . = 0x1677FF;
     BYTE(0xFF)
   } = 0x90909090

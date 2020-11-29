@@ -44,7 +44,7 @@ BOOT      := $(filter $(OBJDIR)/boot/%,$(OBJ))
 KERNEL    := $(filter $(OBJDIR)/kernel/%,$(OBJ))
 
 # Required Libraries
-LIBS      := $(REQS)
+LIBS      := idt cxx crt
 
 # All of the intermediate and output files (for cleanup later)
 CLEAN     := $(OBJ) $(OUTPUT) $(REQS:%=$(LIBDIR)/lib%.a)
@@ -61,7 +61,7 @@ CPPFLAGS  := -c -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
              -fno-asynchronous-unwind-tables -fcheck-new -fno-exceptions \
              $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 LDFLAGS   := -nostdlib -Bsymbolic \
-             $(LIBDIR:%=-L%) -T$(RESDIR)/link.ld $(LIBS:%=-l%)
+             $(LIBDIR:%=-L%) -T$(RESDIR)/link.ld
 $(OBJDIR)/boot/%.o : CPPFLAGS := -c -march=i386 -m16 -mmanual-endbr -fno-pic \
              -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
              -fno-asynchronous-unwind-tables -fcheck-new -fno-exceptions \
@@ -93,7 +93,7 @@ $(LIBDIR)/lib%.a : $(OBJ)
 # Project Image
 $(BINDIR)/%.img : $(LINK_LIST)
 	@echo "===== \e[92m$@\e[39m ====="
-	$(LD) $(filter-out %.a,$^) $(LDFLAGS) -o $@
+	$(LD) $(LDFLAGS) $(filter-out %.a,$^) $(LIBS:%=-l%) -o $@
 
 all : $(OUTPUT)
 	@echo "\e[92mDone\e[39m"!

@@ -6,22 +6,20 @@
 # include <string.hpp>
 # include <bitmask.hpp>
 
-ionia::string test_string {"TEST_STRING"};
-
 extern "C"
 void k_main (void) {
 
   // Set up memory so the allocator doesn't get confused
   for (uint32_t i = 0; i < __map_ent; i++)
     if (__smap[i].BaseL == 0x100000) {
-      sys::MEM_BLOCK::MEM_START =
+      sys::__mem_start =
         reinterpret_cast<sys::MEM_BLOCK*> (__smap[i].BaseL);
 
-      sys::MEM_BLOCK::MEM_MAX =
+      sys::__mem_max =
         reinterpret_cast<sys::MEM_BLOCK*> (__smap[i].BaseL + __smap[i].LengthL);
         
       ionia::memset<uint8_t> (
-        reinterpret_cast<uint8_t*> (sys::MEM_BLOCK::MEM_START),
+        reinterpret_cast<uint8_t*> (sys::__mem_start),
         (uint8_t)0,
         250
       );
@@ -40,7 +38,7 @@ void k_main (void) {
   root.clear ();
   ionia::string* temp = new ionia::string ();
   *temp << "MEMORY AVAILABLE: " << ionia::string::Flag (8)
-        << (uint32_t)sys::MEM_BLOCK::MEM_MAX - (uint32_t)sys::MEM_BLOCK::MEM_START;
+        << (uint32_t)sys::__mem_max - (uint32_t)sys::__mem_start;
   root << *temp;
   root.gotoxy (0, 1);
   delete temp;
@@ -50,5 +48,7 @@ void k_main (void) {
   root.blit ();
   
   // Quit
-  asm volatile ("cli\nhlt");
+  uint32_t asdf = 6;
+  asm volatile ("div %0" : "=a" (asdf) : "a" (asdf), "r" (0));
+  //asm volatile ("cli\nhlt");
 };

@@ -10,8 +10,6 @@
 namespace sys {
   
   struct MEM_BLOCK {
-    static MEM_BLOCK* MEM_START;
-    static MEM_BLOCK* MEM_MAX;
     MEM_BLOCK* next;
     bool used;
 
@@ -30,6 +28,10 @@ namespace sys {
       return _this + sizeof (MEM_BLOCK);
     };
   } __attribute__ ((packed));
+
+  extern "C" MEM_BLOCK* __mem_start;
+  
+  extern "C" MEM_BLOCK* __mem_max;
 
 };
 # endif /* _MEM_H_ */

@@ -7,10 +7,6 @@
 
 using sys::MEM_BLOCK;
 
-MEM_BLOCK* MEM_BLOCK::MEM_START = (MEM_BLOCK*)&__kernel_end;
-
-MEM_BLOCK* MEM_BLOCK::MEM_MAX = MEM_BLOCK::MEM_START + 50;
-
 void* operator new (__SIZE_TYPE__ len) {
   MEM_BLOCK* target;
   MEM_BLOCK* temp;
@@ -21,7 +17,7 @@ void* operator new (__SIZE_TYPE__ len) {
     return nullptr;
 
   // Itterate over the blocks
-  for ( target = MEM_BLOCK::MEM_START;
+  for ( target = sys::__mem_start;
         target->next;
         target = target->next )
   { //  Perform data reclaimation if applicable...

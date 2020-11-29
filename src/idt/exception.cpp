@@ -47,6 +47,7 @@ void exception (regs_t* r) {
   if (r->int_no < 32) {
     ionia::Screen exception_message_screen;
     ionia::string temp;
+    exception_message_screen.clear ();
     temp << "EXCEPTION [" << r->int_no << "] " << exception_strings[r->int_no];
     exception_message_screen.gotoxy (2, 1);
     exception_message_screen << temp;
