@@ -9,7 +9,7 @@ SECTIONS
 
     . = (. + 3) & ~ 3;
     __sector_count = .;
-    LONG((((__kernel_end - __kernel_start) + 511) & ~ 511) / 512)
+    LONG((__kernel_end - __kernel_start) / 512)
     __sector_start = .;
     LONG(3)
     __smap_size = .;
@@ -29,18 +29,19 @@ SECTIONS
   /* Sector 2 reserved for uninitialized data */
   .bss 0x7E00 : AT (0x200) {
     *boot.o(.bss)
+    . = ALIGN(8);
     __map_ent = .;
   }
 
   .kernel 0x8000 : AT (0x400) {
     __kernel_start = .;
-    *(.text .text.* .gnu.linkonce.t.*)
+    KEEP (*(.text .text.* .gnu.linkonce.t.*))
 
-    . = (. + 3) & ~ 3;
-    *(.rodata .rodata.* .gnu.linkonce.r.*)
+    . = ALIGN (8);
+    KEEP (*(.rodata .rodata.* .gnu.linkonce.r.*))
 
-    . = (. + 3) & ~ 3;
-    *(.data .data.* .gnu.linkonce.d.*)
+    . = ALIGN (8);
+    KEEP (*(.data .data.* .gnu.linkonce.d.*))
     SORT (CONSTRUCTORS)
 
     PROVIDE (__ctors_start = .);
@@ -50,11 +51,8 @@ SECTIONS
     KEEP (*(.dtors))
     PROVIDE (__dtors_end = .);
 
-    . = (. + 3) & ~ 3;
+    . = ALIGN (512);
     __kernel_end = .;
-    /* This makes sure the allocator doesn't get confused */
-    LONG(0)
-    LONG(0)
 
     *(.bss)
 

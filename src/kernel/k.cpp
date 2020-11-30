@@ -48,7 +48,5 @@ void k_main (void) {
   root.blit ();
   
   // Quit
-  uint32_t asdf = 6;
-  asm volatile ("div %0" : "=a" (asdf) : "a" (asdf), "r" (0));
-  //asm volatile ("cli\nhlt");
+  asm volatile ("cli\nhlt");
 };

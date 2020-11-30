@@ -37,7 +37,7 @@ typedef void (*void_func_t)(void);
 
 /* All of the various interrupts and service requests.
  * A more elegant solution than this is preferable. */
-extern "C" void_func_t idt_load,
+extern "C" void_func_t
   isr0,  isr1,  isr2,  isr3,  isr4,  isr5,  isr6,  isr7,
   isr8,  isr9,  isr10, isr11, isr12, isr13, isr14, isr15,
   isr16, isr17, isr18, isr19, isr20, isr21, isr22, isr23,
@@ -47,5 +47,10 @@ extern "C" void_func_t idt_load,
 
 /* Function to install the IDT */
 void install_idt (void);
+
+/* Function to install IRQ's
+ * Located in src/idt/irq.asm */
+extern "C" __attribute__ ((regparm(2)))
+void install_irq (unsigned int, handler_t);
 
 # endif /* _IDT_HPP_ */

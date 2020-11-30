@@ -7,23 +7,6 @@
 # include <sys/port.hpp>
 # include <algorithm.hpp>
 
-static handler_t irq_routines[16];
-
-extern "C"
-void irq_handler (regs_t* r) {
-  handler_t handler = irq_routines[r->int_no - 32];
-
-  if (handler)
-    handler (r);
-
-  // Notify slave controller.
-  if (r->int_no >= 40)
-    sys::outb (0xA0, 0x20);
-
-  // Notify master controller.
-  sys::outb (0x20, 0x20);
-};
-
 static inline
 void set_idt_gate ( idt_entry_t* idt, uint8_t num, uint32_t base, uint16_t sel,
                     uint8_t flags)
