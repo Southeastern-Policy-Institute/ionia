@@ -3,8 +3,7 @@
 # include <sys/boot.hpp>
 # include <sys/mem.hpp>
 # include <sys/idt.hpp>
-# include <string.hpp>
-# include <bitmask.hpp>
+# include <ionia.hpp>
 
 extern "C"
 void k_main (void) {

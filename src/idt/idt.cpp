@@ -5,7 +5,7 @@
 # include <stdint.h>
 # include <sys/idt.hpp>
 # include <sys/port.hpp>
-# include <algorithm.hpp>
+# include <ionia.hpp>
 
 static inline
 void set_idt_gate ( idt_entry_t* idt, uint8_t num, uint32_t base, uint16_t sel,

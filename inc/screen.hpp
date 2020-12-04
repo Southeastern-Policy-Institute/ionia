@@ -7,7 +7,7 @@
 #   include "screen/attribute.hpp"
 #   include "screen/schar.hpp"
 #   include "screen/cursor.hpp"
-#   include "string.hpp"
+#   include "ionia/string.hpp"
 
 namespace ionia {
 

@@ -4,7 +4,7 @@
 
 # include <stdint.h>
 # include <sys/idt.hpp>
-# include <string.hpp>
+# include <ionia.hpp>
 # include <screen.hpp>
 
 extern "C"
