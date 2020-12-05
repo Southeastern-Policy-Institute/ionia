@@ -20,6 +20,8 @@ SECTIONS
     LONG(0x100000);
     __mem_max = .;
     LONG(0)
+    __errno = .;
+    LONG(0)
 
     /* Boot Sector Signature */
     . = 0x1FE;
