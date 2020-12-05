@@ -10,13 +10,13 @@ namespace sys {
 
   inline
   void outb (uint16_t port, uint8_t data) {
-    asm volatile ("outb %%al, %%dx" : : "a" (data), "d" (port));
+    asm volatile ("outb %0, %1" : : "a" (data), "d" (port));
   };
 
   inline
   uint8_t inb (uint16_t port) {
     uint8_t __ret;
-    asm volatile ("inb %%dx, %%al" : "=a" (__ret) : "d" (port));
+    asm volatile ("inb %1, %0" : "=a" (__ret) : "d" (port));
     return __ret;
   };
 

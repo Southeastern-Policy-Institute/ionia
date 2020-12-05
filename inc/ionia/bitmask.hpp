@@ -10,6 +10,8 @@ template <class E>
 class bitmask_t {
   uint32_t mask_;
 
+public:
+
   static constexpr
   uint32_t BTR (uint32_t val, E n) {
     return val & ~(1U << static_cast<uint32_t> (n));
@@ -19,6 +21,8 @@ class bitmask_t {
   uint32_t BTS (uint32_t val, E n) {
     return val | (1U << static_cast<uint32_t> (n));
   };
+
+private:
 
   constexpr
   uint32_t build (E val) { return BTS (0, val); };

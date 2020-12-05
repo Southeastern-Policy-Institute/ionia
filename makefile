@@ -44,7 +44,7 @@ BOOT      := $(filter $(OBJDIR)/boot/%,$(OBJ))
 KERNEL    := $(filter $(OBJDIR)/kernel/%,$(OBJ))
 
 # Required Libraries
-LIBS      := idt cxx crt
+LIBS      := idt c cxx crt
 
 # All of the intermediate and output files (for cleanup later)
 CLEAN     := $(OBJ) $(OUTPUT) $(REQS:%=$(LIBDIR)/lib%.a)
