@@ -4,15 +4,20 @@
 
 # ifndef  _ERRNO_H_
 #   define  _ERRNO_H_
-#   define  errno __errno
-#   ifdef   __cplusplus
-extern "C" {
+#   ifndef  __cplusplus
+#     define  errno __errno
+#   else
+#     define  errno std::__errno
+namespace std {
+  extern "C" {
 #   endif /* __cplusplus */
 
-  /* Most recent error code.  Specified by link script. */
-  extern __INT32_TYPE__ __errno;
+    /* Most recent error code.  Specified by link script. */
+    extern volatile
+    __INT32_TYPE__ __errno;
 
 #   ifdef   __cplusplus
+  };
 };
 #   endif /* __cplusplus */
 # endif /* _ERRNO_H_ */
