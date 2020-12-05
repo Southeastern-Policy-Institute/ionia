@@ -5,10 +5,9 @@
 # if !defined(_ICXXABI_HPP_) && defined(__cplusplus)
 #   define _ICXXABI_HPP_
 #   define ATEXIT_MAX_FUNCS 128u
-#   ifdef __cplusplus
+
 namespace __cxxabiv1 {
   extern "C" {
-#   endif /* __cplusplus */
 
     typedef unsigned uarch_t;
 
@@ -25,8 +24,7 @@ namespace __cxxabiv1 {
     int __cxa_atexit (destructor_func_t, void*, void*);
     void __cxa_finalize (void*);
 
-#   ifdef __cplusplus
   };
 };
-#   endif /* __cplusplus */
+
 # endif /* _ICXXABI_HPP_ */

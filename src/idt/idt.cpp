@@ -7,6 +7,8 @@
 # include <sys/port.hpp>
 # include <ionia.hpp>
 
+using namespace sys;
+
 static inline
 void set_idt_gate ( idt_entry_t* idt, uint8_t num, uint32_t base, uint16_t sel,
                     uint8_t flags)
@@ -17,7 +19,7 @@ void set_idt_gate ( idt_entry_t* idt, uint8_t num, uint32_t base, uint16_t sel,
   idt[num].sel = sel;
 };
 
-void install_idt (void) {
+void sys::install_idt (void) {
 
   static idt_entry_t* idt = nullptr;
 

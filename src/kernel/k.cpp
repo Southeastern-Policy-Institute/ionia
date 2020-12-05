@@ -8,6 +8,8 @@
 extern "C"
 void k_main (void) {
 
+  using namespace sys;
+
   // Set up memory so the allocator doesn't get confused
   for (uint32_t i = 0; i < __map_ent; i++)
     if (__smap[i].BaseL == 0x100000) {

@@ -7,6 +7,8 @@
 # include <ionia.hpp>
 # include <screen.hpp>
 
+using namespace sys;
+
 extern "C"
 void exception (regs_t* r) {
 
