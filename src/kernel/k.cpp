@@ -4,6 +4,7 @@
 # include <sys/mem.hpp>
 # include <sys/idt.hpp>
 # include <ionia.hpp>
+# include <stdlib.h>
 
 extern "C"
 void k_main (void) {
@@ -40,8 +41,10 @@ void k_main (void) {
   root << *temp;
   root.gotoxy (0, 1);
   delete temp;
+  static const char* strTestNumber = "1337";
+  uint32_t intTestNumber = std::atoi (strTestNumber);
   temp = new ionia::string ();
-  *temp << "TEST STRING: " << ionia::string::Flag (1) << (uint32_t)__map_ent;
+  *temp << "TEST NUMBER: " << ionia::string::Flag (1, bitmask_t<ionia::string::FLAG> (ionia::string::ZERO_EXTEND, ionia::string::CAPS)) << intTestNumber;
   root << *temp;
   root.blit ();
 

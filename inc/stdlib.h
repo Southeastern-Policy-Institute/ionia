@@ -37,7 +37,7 @@ namespace std {
 
   // Parse string representation of an integer
   __attribute__ ((nonnull, nothrow))
-  __INT32_TYPE__ atoi (const char*);
+  int atoi (const char*);
 
   // Produces a random number
   __attribute__ ((nothrow))
