@@ -4,8 +4,7 @@
 
 # if !defined(_SCHAR_T_HPP_) && defined(__cplusplus)
 #   define  _SCHAR_T_HPP_
-#   include <stdint.h>
-#   include "attribute.hpp"
+#   include "screen"
 
 namespace sys::screen {
 

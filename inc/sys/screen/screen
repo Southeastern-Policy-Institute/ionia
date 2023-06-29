@@ -1,0 +1,27 @@
+/* Unified Header Inclusion for Screen Definitions */
+
+# if !defined(_SCREEN_) && defined(__cplusplus)
+#   define  _SCREEN_
+#   include <stdint.h>
+#   include "attribute.hpp"
+#   include "schar.hpp"
+
+namespace sys::screen {
+
+  static constexpr
+  __SIZE_TYPE__ WIDTH = 80;
+
+  static constexpr
+  __SIZE_TYPE__ HEIGHT = 25;
+
+  extern "C" {
+    extern volatile
+    uint16_t __bios_scrn[];
+  };
+
+};
+
+#   include "cursor.hpp"
+#   include "panel.hpp"
+#   include "screen.hpp"
+# endif /* _SCREEN_ */

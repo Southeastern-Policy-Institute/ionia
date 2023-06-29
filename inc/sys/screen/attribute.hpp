@@ -4,7 +4,7 @@
 
 # if !defined(_ATTR_T_HPP_) && defined(__cplusplus)
 #   define  _ATTR_T_HPP_
-#   include <stdint.h>
+#   include "screen"
 
 namespace sys::screen {
 

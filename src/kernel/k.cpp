@@ -5,8 +5,7 @@
 # include <sys/idt.hpp>
 # include <sys/algorithm.hpp>
 # include <sys/string.hpp>
-# include <sys/screen/panel.hpp>
-# include <sys/screen/screen.hpp>
+# include <sys/screen/screen>
 # include <stdlib.h>
 
 extern "C"

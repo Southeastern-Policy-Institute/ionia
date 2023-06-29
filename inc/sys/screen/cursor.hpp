@@ -4,17 +4,21 @@
 
 # if !defined(_CURSOR_HPP_) && defined(__cplusplus)
 #   define  _CURSOR_HPP_
-#   include <stdint.h>
+#   include "screen"
 
-namespace sys {
+namespace sys::screen {
 
-  /* Screen Cursor */
+  /* 2 Dimensional Buffer Cursor */
+  template <unsigned int w = WIDTH>
   struct Cursor {
     __SIZE_TYPE__ position_;
   public:
+    static constexpr
+    unsigned int buffer_width = w;
+
     constexpr
     Cursor (uint8_t x = 0, uint8_t y = 0)
-      : position_ (x + (y * 80))
+      : position_ (x + (y * buffer_width))
     {};
 
     constexpr
@@ -29,12 +33,12 @@ namespace sys {
 
     constexpr
     uint8_t x (void) const {
-      return position_ % 80;
+      return position_ % buffer_width;
     };
 
     constexpr
     uint8_t y (void) const {
-      return position_ / 80;
+      return position_ / buffer_width;
     };
 
     inline

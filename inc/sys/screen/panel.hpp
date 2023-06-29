@@ -4,17 +4,13 @@
 
 # if !defined(_PANEL_HPP_) && defined(__cplusplus)
 #   define  _PANEL_HPP_
-#   include "screen.hpp"
-#   include "attribute.hpp"
-#   include "schar.hpp"
-#   include "cursor.hpp"
-#   include "../string.hpp"
+#   include "screen"
 
 namespace sys::screen {
 
   template <unsigned int w, unsigned int h>
   class Panel : public array<schar_t> {
-    Cursor cursor_;
+    Cursor<w> cursor_;
   public:
 
     static constexpr
@@ -37,8 +33,8 @@ namespace sys::screen {
 
     // Relocate Cursor Position
     inline
-    const Cursor& gotoxy (__SIZE_TYPE__ x, __SIZE_TYPE__ y) {
-      cursor_ = Cursor (x, y);
+    const Cursor<width>& gotoxy (__SIZE_TYPE__ x, __SIZE_TYPE__ y) {
+      cursor_ = Cursor<width> (x, y);
       return cursor_;
     };
 
@@ -48,14 +44,6 @@ namespace sys::screen {
         array_[cursor_++] = schar_t (c);
       return str;
     };
-  };
-
-  // Blit to display
-  template <unsigned int w, unsigned int h>
-  void blit (const Panel<w,h>& panel, uint8_t x, uint8_t y) {
-    for (__SIZE_TYPE__ i = 0; i < panel.height; i++)
-      for (__SIZE_TYPE__ j = 0; j < panel.width; j++)
-        __bios_scrn[(x + j) + ((y + i) * WIDTH)] = panel[j + (i * panel.width)];
   };
 
 };
