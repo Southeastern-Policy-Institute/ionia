@@ -1,4 +1,4 @@
-/* PANEL.HPP - Declarations for Screen Manipulation
+/* PANEL.HPP - For controlling on-screen boxes
  * Southeastern Policy Institute, 2023
  */
 
@@ -21,7 +21,7 @@ namespace sys::screen {
     typedef void (*panel_func_t) (Panel<width, height>&);
 
   private:
-    Cursor<w> cursor_;
+    Cursor<width> cursor_;
     attr_t attr_;
     panel_func_t proc_;
 
