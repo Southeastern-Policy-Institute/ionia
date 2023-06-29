@@ -1,5 +1,5 @@
 /* STRING.H - Standard C Library Functions and Declarations
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # ifndef  _STRING_H_

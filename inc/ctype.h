@@ -1,5 +1,5 @@
 /* CTYPE.H - Character Types
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # ifndef  _CTYPE_H_

@@ -1,5 +1,5 @@
 /* STRING.HPP - Variable-width character string manipulation.
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_SPI_STRING_HPP_) && defined(__cplusplus)
@@ -15,7 +15,7 @@ typedef char tchar_t;
 #   include "algorithm.hpp"
 #   include "bitmask.hpp"
 
-namespace ionia {
+namespace sys {
 
   // Variable width NULL terminated string datatype.
   class string : public array<tchar_t> {
@@ -45,13 +45,13 @@ namespace ionia {
 
     // Returns the number of characters in a string.
     template<typename T = tchar_t> static inline
-    unsigned int strlen (const T* str) {
-      unsigned int len;
+    __SIZE_TYPE__ strlen (const T* str) {
+      __SIZE_TYPE__ len;
       if (!str)
         return 0;
       for (len = 0; str[len]; len++);
       return len;
-    };
+    } __attribute__ ((nonnull));
 
     // String Copy
     template <typename T = tchar_t> static inline

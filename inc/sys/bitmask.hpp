@@ -1,5 +1,5 @@
 /* BITMASK.HPP - Bitmask Type
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_BITMASK_HPP_) && defined(__cplusplus)
@@ -12,11 +12,13 @@ class bitmask_t {
 
 public:
 
+  // Bit Test and Reset
   static constexpr
   uint32_t BTR (uint32_t val, E n) {
     return val & ~(1U << static_cast<uint32_t> (n));
   };
 
+  // Bit Test and Set
   static constexpr
   uint32_t BTS (uint32_t val, E n) {
     return val | (1U << static_cast<uint32_t> (n));

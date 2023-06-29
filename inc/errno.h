@@ -1,5 +1,5 @@
 /* ERRNO.H - Access and store the most recent error code
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # ifndef  _ERRNO_H_

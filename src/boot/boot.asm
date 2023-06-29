@@ -1,5 +1,5 @@
 ; Protected Mode Boot Stub
-; Southeastern Policy Institute, 2020
+; Southeastern Policy Institute, 2023
 
 [BITS 16]
 

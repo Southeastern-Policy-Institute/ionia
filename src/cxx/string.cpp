@@ -1,10 +1,10 @@
 /* STRING.CPP - Implements some string manipulation routines.
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
-# include <ionia.hpp>
+# include <sys/string.hpp>
 
-using ionia::string;
+using sys::string;
 
 string::Flag string::flags {};
 

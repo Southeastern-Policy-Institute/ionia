@@ -1,9 +1,9 @@
 /* NEW.CPP - Kernel Memory Allocator
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # include <sys/mem.hpp>
-# include <ionia.hpp>
+# include <sys/algorithm.hpp>
 
 using sys::MEM_BLOCK;
 
@@ -58,7 +58,7 @@ done:
 
 void* operator new[](__SIZE_TYPE__ size) {
   return
-    ionia::memset<uint8_t> (
+    sys::memset<uint8_t> (
       reinterpret_cast<uint8_t*> (operator new (size)),
       0,
       size

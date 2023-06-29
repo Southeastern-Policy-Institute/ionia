@@ -1,12 +1,12 @@
 /* ATTRIBUTE.HPP - Declarations for Screen Colors and Character Attributes
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_ATTR_T_HPP_) && defined(__cplusplus)
 #   define  _ATTR_T_HPP_
 #   include <stdint.h>
 
-namespace ionia {
+namespace sys::screen {
 
   //  Color codes for screen characters.
   enum class COLOR : uint8_t {

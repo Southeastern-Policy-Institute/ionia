@@ -1,5 +1,5 @@
 /* CTYPE.CPP - Defines char types
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # include <ctype.h>

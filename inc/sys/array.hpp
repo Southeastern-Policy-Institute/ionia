@@ -1,15 +1,17 @@
 /* ARRAY.HPP - Dynamically allocated, variable width array
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_SPI_ARRAY_HPP_) && defined(__cplusplus)
 #   define  _SPI_ARRAY_HPP_
-#   include "algorithm.hpp"
+#   include <string.h>
 
-namespace ionia {
+namespace sys {
 
   // Dynamically allocated fixed-width array of variable type
-  template <typename T> class array {
+  template <typename T>
+  class array {
+
   protected:
     T* array_;
     __SIZE_TYPE__ size_;
@@ -66,7 +68,7 @@ namespace ionia {
     };
 
     inline
-    array (unsigned int size)
+    array (unsigned int size = 0)
       : array_ (nullptr),
         size_ (size)
     {
@@ -74,16 +76,11 @@ namespace ionia {
     };
 
     inline
-    array (void)
-      : array (0)
-    {};
-
-    inline
     array (const T* input_array, unsigned int size)
       : array (size)
     {
       for (__SIZE_TYPE__ i = 0; size--; i++)
-        array_[i] = *input_array++;
+        array_[i] = input_array[i];
     };
 
     template <typename... Targs> inline
@@ -102,30 +99,40 @@ namespace ionia {
     };
 
     inline
-    ~array (void) {
+    ~array (void) noexcept {
       delete[] array_;
     };
 
-    array& operator= (const array& arr) {
+    array& operator= (const array& arr) noexcept {
+
+      // Internal memcpy() to avoid LIBC
+      auto memcpy = [] (T* dest, const T* src, __SIZE_TYPE__ len) -> void* {
+        T* idest = dest;
+        while (len--)
+          *dest++ = *src++;
+        return idest;
+      };
+
       delete array_;
       array_ = new T[arr.size_];
       size_ = arr.size_;
-      memcpy<T> (array_, arr.array_, arr.size_);
+      memcpy (array_, arr.array_, arr.size_);
       return *this;
+
     };
 
     inline
-    bool is_empty (void) const {
-      return array_ == static_cast<T*> (nullptr);
+    bool is_empty (void) const noexcept {
+      return array_ == reinterpret_cast<T*> (nullptr);
     };
 
     inline
-    unsigned int size (void) const {
+    unsigned int size (void) const noexcept {
       return size_;
     };
 
     inline
-    operator const T* (void) const {
+    operator const T* (void) const noexcept {
       return array_;
     };
 
@@ -135,14 +142,14 @@ namespace ionia {
     };
 
     inline
-    T operator[] (unsigned int index) const {
+    T operator[] (unsigned int index) const noexcept {
       if (!array_ || index >= size_)
         return T ();
       return T (array_[index]);
     };
 
     inline
-    T& operator[] (unsigned int index) {
+    T& operator[] (unsigned int index) noexcept {
       static T NULL_T;
       if (!array_ || index >= size_)
         return NULL_T;

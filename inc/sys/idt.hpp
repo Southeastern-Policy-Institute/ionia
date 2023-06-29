@@ -1,5 +1,5 @@
 /* IDT.H - Interrupt Descriptor Table Definitions
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_IDT_HPP_) && defined(__cplusplus)
@@ -10,10 +10,10 @@ namespace sys {
 
   // For storage of processor state.
   typedef struct REGS {
-    uint32_t gs, fs, es, ds;
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    uint32_t int_no, err_code;
-    uint32_t eip, cs, eflags, useresp, ss;
+    unsigned int gs, fs, es, ds;
+    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
+    unsigned int int_no, err_code;
+    unsigned int eip, cs, eflags, useresp, ss;
   } __attribute__ ((packed)) regs_t;
 
   /* Defines an IDT entry */
@@ -27,9 +27,11 @@ namespace sys {
 
   /* Pointer to IDT */
   struct IDTR {
-      uint16_t  limit;
-      uint32_t  base;
+    uint16_t  limit;
+    uint32_t  base;
   } __attribute__ ((packed));
+
+  constexpr static __SIZE_TYPE__ IDT_RECORD_COUNT = 256;
 
   /* Interrupt Handler Type */
   typedef void (*handler_t)(regs_t*);

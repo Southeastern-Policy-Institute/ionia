@@ -1,11 +1,11 @@
 /* ALGORITHM.HPP - Functions & Stuff
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_SPI_ALGORITHM_HPP_) && defined(__cplusplus)
 #   define  _SPI_ALGORITHM_HPP_
 
-namespace ionia {
+namespace sys {
 
   //  Copy memory
   template <typename T = char>

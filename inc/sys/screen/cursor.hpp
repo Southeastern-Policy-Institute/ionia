@@ -1,12 +1,12 @@
 /* CURSOR.HPP - Declarations for Screen Cursor
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_CURSOR_HPP_) && defined(__cplusplus)
 #   define  _CURSOR_HPP_
 #   include <stdint.h>
 
-namespace ionia {
+namespace sys {
 
   /* Screen Cursor */
   struct Cursor {

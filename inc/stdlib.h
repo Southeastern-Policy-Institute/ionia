@@ -1,5 +1,5 @@
 /* STDLIB.H - Standard C Library Functions and Declarations
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # ifndef  _STDLIB_H_
@@ -29,7 +29,7 @@ namespace std {
   // Structure to represent the result value of an integral division
   // as performed by function `div`
   typedef struct {
-    __INT32_TYPE__ quotient, remainder;
+    int quot, rem;
   } div_t;
 
   // Size Type
@@ -41,11 +41,11 @@ namespace std {
 
   // Produces a random number
   __attribute__ ((nothrow))
-  __INT32_TYPE__ rand (void);
+  int rand (void);
 
   // Initializes the random number generator
-  __attribute__ ((regparm(1), nothrow))
-  void srand (__INT32_TYPE__);
+  __attribute__ ((nothrow))
+  void srand (int);
 
   // Allocate memory
   __attribute__ ((returns_nonnull, nothrow))
@@ -60,12 +60,12 @@ namespace std {
   void* realloc (void*, size_t);
 
   // Absolute value
-  __attribute__ ((regparm(1), nothrow))
-  __UINT32_TYPE__ abs (__INT32_TYPE__);
+  __attribute__ ((nothrow))
+  unsigned int abs (int);
 
   // Integral division
-  __attribute__ ((regparm(2), nothrow))
-  div_t div (__INT32_TYPE__, __INT32_TYPE__);
+  __attribute__ ((nothrow))
+  div_t div (int, int);
 
 #   ifdef   __cplusplus
   };

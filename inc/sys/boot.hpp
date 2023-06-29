@@ -1,21 +1,26 @@
 /* BOOT.HPP - Declarations for BootLoader
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(__BOOT_HPP__) && defined(__cplusplus)
 #   define  __BOOT_HPP__
 #   include <stdint.h>
+#   define  UINT64_UNION(name)  union {                       \
+                                  struct {                    \
+                                    uint32_t name##L;         \
+                                    uint32_t name##H;         \
+                                  } __attribute__ ((packed)); \
+                                  uint64_t name;              \
+                                }
 
 namespace sys {
 
   typedef struct SMAP_ENTRY {
-    uint32_t BaseL;   // base address uint64_t
-    uint32_t BaseH;
-    uint32_t LengthL; // length uint64_t
-    uint32_t LengthH;
+    UINT64_UNION (Base);
+    UINT64_UNION (Length);
     uint32_t Type;    // entry Type
     uint32_t ACPI;    // extended
-  } __attribute__((packed)) smap_entry_t;
+  } __attribute__ ((packed)) smap_entry_t;
 
   struct GDT_ENTRY {
     uint16_t limit, baseL;
@@ -105,4 +110,5 @@ namespace sys {
 
 };
 
+#   undef UINT64_UNION
 # endif /* __BOOT_HPP__ */

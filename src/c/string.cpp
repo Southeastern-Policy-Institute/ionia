@@ -1,5 +1,5 @@
 /* STRING.CPP - Implements string manipulation routines
- * Southeaster Policy Institute, 2020
+ * Southeaster Policy Institute, 2023
  */
 
 # include <string.h>
@@ -126,11 +126,11 @@ int std::strcmp (const char* str1, const char* str2) {
 extern "C" __attribute__ ((nonnull, nothrow))
 int std::strncmp (const char* str1, const char* str2, size_t len) {
 
-  unsigned int str1_total, str2_total;
+  unsigned int str1_total = 0, str2_total = 0;
 
-  for (size_t i = 0, str1_total = 0; *str1 && i < len; i++)
+  for (size_t i = 0; *str1 && i < len; i++)
     str1_total += *str1++;
-  for (size_t i = 0, str2_total = 0; *str2 && i < len; i++)
+  for (size_t i = 0; *str2 && i < len; i++)
     str2_total += *str2++;
 
   return str1_total - str2_total;

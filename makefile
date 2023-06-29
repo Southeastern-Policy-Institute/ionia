@@ -1,6 +1,9 @@
+# SPI Ionia Comprehensive Makefile
+# Southeastern Policy Institute, 2023
+
 # Project Name and Version
 IONIA_NAME:= IONIA
-IONIA_VER := 0x0001
+IONIA_VER := 0x0003
 
 # Debug Flag
 DEBUG     := DEBUG
@@ -54,16 +57,16 @@ LINK_LIST := $(BOOT) $(KERNEL) $(REQS:%=$(LIBDIR)/lib%.a)
 
 # Flags
 ASFLAGS   := -f elf
-CFLAGS    := -c -Os -ffreestanding -Wall -x c -std=gnu11 -fno-pie \
+CFLAGS    := -c -O -ffreestanding -Wall -x c -std=gnu20 -fno-pie \
              -fno-asynchronous-unwind-tables -fno-exceptions \
              $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
-CPPFLAGS  := -c -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
+CPPFLAGS  := -c -O -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
              -fno-asynchronous-unwind-tables -fcheck-new -fno-exceptions \
              $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 LDFLAGS   := -nostdlib -Bsymbolic \
              $(LIBDIR:%=-L%) -T$(RESDIR)/link.ld
 $(OBJDIR)/boot/%.o : CPPFLAGS := -c -march=i386 -m16 -mmanual-endbr -fno-pic \
-             -Os -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
+             -O -nostdinc++ -std=c++11 -ffreestanding -Wall -fno-pie \
              -fno-asynchronous-unwind-tables -fcheck-new -fno-exceptions \
              $(INCDIR:%=-I%) $(DEFS:%=-D%) $(UNDEFS:%=-U%)
 

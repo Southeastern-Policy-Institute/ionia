@@ -1,11 +1,10 @@
 /* EXCEPTION.CPP - Exception Handling Functions
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # include <stdint.h>
 # include <sys/idt.hpp>
-# include <ionia.hpp>
-# include <screen.hpp>
+# include <sys/string.hpp>
 
 using namespace sys;
 
@@ -48,13 +47,7 @@ void exception (regs_t* r) {
   };
 
   if (r->int_no < 32) {
-    ionia::Screen exception_message_screen;
-    ionia::string temp;
-    exception_message_screen.clear ();
-    temp << "EXCEPTION [" << r->int_no << "] " << exception_strings[r->int_no];
-    exception_message_screen.gotoxy (2, 1);
-    exception_message_screen << temp;
-    exception_message_screen.blit ();
+    // ERROR MESSAGE GOES HERE
     asm volatile ("cli\nhlt");
   };
 

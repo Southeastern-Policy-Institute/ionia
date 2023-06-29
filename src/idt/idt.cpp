@@ -1,17 +1,15 @@
 /* IDT.CPP - Interrupt Descriptor Table Functions
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # include <stdint.h>
 # include <sys/idt.hpp>
 # include <sys/port.hpp>
-# include <ionia.hpp>
-
-using namespace sys;
+# include <sys/algorithm.hpp>
 
 static inline
-void set_idt_gate ( idt_entry_t* idt, uint8_t num, uint32_t base, uint16_t sel,
-                    uint8_t flags)
+void set_idt_gate ( sys::idt_entry_t* idt, uint8_t num, uint32_t base,
+                    uint16_t sel, uint8_t flags)
 {
   idt[num].base_hi = base >> 16;
   idt[num].base_lo = base & 0xFFFF;
@@ -39,16 +37,16 @@ void sys::install_idt (void) {
 
   // Allocate space for the IDT
   if (!idt)
-    idt = new idt_entry_t[256];
+    idt = new idt_entry_t[IDT_RECORD_COUNT];
 
   // Set IDT pointer.
-  idtr.limit = (sizeof (idt_entry_t) * 256) - 1;
+  idtr.limit = IDT_RECORD_COUNT - 1;
   idtr.base = reinterpret_cast<uint32_t> (idt);
 
   // Clear IDT.
-  ionia::memset<uint8_t> (reinterpret_cast<uint8_t*> (idt),
-                          0U,
-                          sizeof (idt_entry_t) * 256);
+  sys::memset<uint8_t> (reinterpret_cast<uint8_t*> (idt),
+                        0U,
+                        sizeof (idt_entry_t) * IDT_RECORD_COUNT);
 
   // Install the ISR stubs.
   for (__SIZE_TYPE__ i = 0; i < 32; i++)
@@ -71,6 +69,6 @@ void sys::install_idt (void) {
     set_idt_gate (idt, i + 32, (unsigned)irq_table[i], 0x08, 0x8E);
 
   // Load IDT
-  asm volatile ("lidt %0" : : "m" (idtr));
+  asm volatile ("lidt\t%0" : : "m" (idtr));
 
 };

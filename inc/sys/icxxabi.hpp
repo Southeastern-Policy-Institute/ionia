@@ -1,5 +1,5 @@
 /* ICXXABI.HPP - GCC ABI Implementation
- * Southeastern Policy Institute, 2020
+ * Southeastern Policy Institute, 2023
  */
 
 # if !defined(_ICXXABI_HPP_) && defined(__cplusplus)
