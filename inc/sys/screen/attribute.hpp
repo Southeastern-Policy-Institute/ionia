@@ -25,6 +25,12 @@ namespace sys::screen {
 
   public:
     constexpr
+    COLOR fore (void) const { return static_cast<COLOR> (attr_ & 0x0F); };
+
+    constexpr
+    COLOR back (void) const { return static_cast<COLOR> (attr_ >> 4); };
+
+    constexpr
     attr_t (COLOR fore, COLOR back)
       : attr_ ( (static_cast<uint8_t> (back) << 4)
               | (static_cast<uint8_t> (fore) & 0x0F))

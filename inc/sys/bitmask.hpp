@@ -6,57 +6,61 @@
 #   define  _BITMASK_HPP_
 #   include <stdint.h>
 
-template <class E>
-class bitmask_t {
-  uint32_t mask_;
+namespace sys {
 
-public:
+  template <class E>
+  class bitmask_t {
+    uint32_t mask_;
 
-  // Bit Test and Reset
-  static constexpr
-  uint32_t BTR (uint32_t val, E n) {
-    return val & ~(1U << static_cast<uint32_t> (n));
-  };
+  public:
 
-  // Bit Test and Set
-  static constexpr
-  uint32_t BTS (uint32_t val, E n) {
-    return val | (1U << static_cast<uint32_t> (n));
-  };
+    // Bit Test and Reset
+    static constexpr
+    uint32_t BTR (uint32_t val, E n) {
+      return val & ~(1U << static_cast<uint32_t> (n));
+    };
 
-private:
+    // Bit Test and Set
+    static constexpr
+    uint32_t BTS (uint32_t val, E n) {
+      return val | (1U << static_cast<uint32_t> (n));
+    };
 
-  constexpr
-  uint32_t build (E val) { return BTS (0, val); };
+  private:
 
-  template <typename... Targs> constexpr
-  uint32_t build (E val, Targs... args) {
-    return BTS (0, val) | build (args...);
-  };
+    constexpr
+    uint32_t build (E val) { return BTS (0, val); };
 
-public:
+    template <typename... Targs> constexpr
+    uint32_t build (E val, Targs... args) {
+      return BTS (0, val) | build (args...);
+    };
 
-  constexpr
-  bitmask_t (void)
-    : mask_ (0U)
-  {};
+  public:
 
-  template <typename... Targs> constexpr
-  bitmask_t (E head_1, Targs... args)
-    : mask_ (build (head_1, args...))
-  {};
+    constexpr
+    bitmask_t (void)
+      : mask_ (0U)
+    {};
 
-  constexpr
-  bool operator[] (E n) const {
-    return mask_ & (1U << static_cast<uint32_t> (n));
-  };
+    template <typename... Targs> constexpr
+    bitmask_t (E head_1, Targs... args)
+      : mask_ (build (head_1, args...))
+    {};
 
-  inline
-  bitmask_t& operator() (E n, bool val) {
-    mask_ = val
-      ? BTS (mask_, n)
-      : BTR (mask_, n);
-    return *this;
+    constexpr
+    bool operator[] (E n) const {
+      return mask_ & (1U << static_cast<uint32_t> (n));
+    };
+
+    inline
+    bitmask_t& operator() (E n, bool val) {
+      mask_ = val
+        ? BTS (mask_, n)
+        : BTR (mask_, n);
+      return *this;
+    };
+
   };
 
 };

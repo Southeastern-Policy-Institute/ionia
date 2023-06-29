@@ -32,23 +32,27 @@ void k_main (void) {
   // Enable interrupts
   asm volatile ("sti");
 
+
   // Create screen buffer
   screen::Panel<screen::WIDTH, screen::HEIGHT> root;
+  screen::Panel<30, 5> test_panel (screen::COLOR::BLACK, screen::COLOR::LIGHT_BLUE);
 
   // Clear screen
   root.clear ();
   string* temp = new string ();
   *temp << "MEMORY AVAILABLE: " << string::Flag (8)
         << (uint32_t)__mem_max - (uint32_t)__mem_start;
-  root << *temp;
-  root.gotoxy (0, 1);
+  test_panel << *temp;
+  test_panel.gotoxy (0, 1);
   delete temp;
   static const char* strTestNumber = "1337";
   uint32_t intTestNumber = std::atoi (strTestNumber);
   temp = new string ();
   *temp << "TEST NUMBER: " << string::Flag (1, bitmask_t<string::FLAG> (string::ZERO_EXTEND, string::CAPS)) << intTestNumber;
-  root << *temp;
+  test_panel << *temp;
+  delete temp;
   screen::blit (root, 0, 0);
+  screen::blit (test_panel, 5, 5);
 
   // Quit
   asm volatile ("cli\nhlt");

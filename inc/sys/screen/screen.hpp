@@ -9,7 +9,7 @@
 namespace sys::screen {
 
   inline
-  void putc (schar_t schar, __SIZE_TYPE__ x, __SIZE_TYPE__ y) {
+  void putc (schar_t schar, uint8_t x, uint8_t y) {
     if (x < WIDTH && y < HEIGHT)
       __bios_scrn[Cursor<WIDTH> (x, y)] = schar;
   };

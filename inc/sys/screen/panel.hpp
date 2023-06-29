@@ -10,7 +10,6 @@ namespace sys::screen {
 
   template <unsigned int w, unsigned int h>
   class Panel : public array<schar_t> {
-    Cursor<w> cursor_;
   public:
 
     static constexpr
@@ -19,16 +18,34 @@ namespace sys::screen {
     static constexpr
     __SIZE_TYPE__ height = h;
 
+    typedef void (*panel_func_t) (Panel<width, height>&);
+
+  private:
+    Cursor<w> cursor_;
+    attr_t attr_;
+    panel_func_t proc_;
+
+  public:
     inline
-    Panel (void)
-      : array<schar_t> (width * height), cursor_ ()
-    {};
+    COLOR foreground (void) const { return attr_.fore (); };
+
+    inline
+    COLOR background (void) const { return attr_.back (); };
+
+    inline
+    Panel ( COLOR fore = DEFAULT_FOREGROUND, COLOR back = DEFAULT_BACKGROUND,
+            panel_func_t proc = nullptr)
+      : array<schar_t> (width * height), cursor_ (), attr_ (fore, back),
+        proc_ (proc)
+    {
+      clear ();
+    };
 
     // Clear the Panel Buffer
     inline
     void clear (void) {
       for (uint32_t i = 0; i < width * height; i++)
-        array_[i] = schar_t (' ');
+        array_[i] = schar_t (' ', attr_);
     };
 
     // Relocate Cursor Position
@@ -41,9 +58,11 @@ namespace sys::screen {
     // Print a string at cursor position
     string operator<< (string str) {
       for (const auto& c : str)
-        array_[cursor_++] = schar_t (c);
+        array_[cursor_++] = schar_t (c, attr_);
       return str;
     };
+
+    void operator() (void) { if (proc_) proc_ (*this); };
   };
 
 };
