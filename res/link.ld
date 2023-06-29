@@ -1,3 +1,7 @@
+/* LINK.LD - Ionia Linker Script
+ * Southeastern Policy Institute, 2023
+ */
+
 OUTPUT_FORMAT(binary)
 SECTIONS
 {

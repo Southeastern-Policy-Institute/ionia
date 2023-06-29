@@ -7,6 +7,7 @@
 
 using sys::MEM_BLOCK;
 
+__attribute__ ((nonnull))
 void* operator new (__SIZE_TYPE__ len) {
   MEM_BLOCK* target;
   MEM_BLOCK* temp;
